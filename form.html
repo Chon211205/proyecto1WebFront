@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+
+  <header class="hero">
+    <section>
+      <p class="eyebrow">Series Tracker</p>
+      <h1 id="formTitle">Agregar serie</h1>
+    </section>
+    <a href="index.html" class="secondary link-button">Volver</a>
+  </header>
+
+  <form id="seriesForm" class="form">
+    <input type="hidden" id="seriesId">
+
+    <label>Nombre
+      <input id="name" required>
+    </label>
+
+    <label>Episodio actual
+      <input id="currentEpisode" type="number" min="0" value="0">
+    </label>
+
+    <label>Total episodios
+      <input id="totalEpisodes" type="number" min="0" value="0">
+    </label>
+
+    <label>Imagen
+      <input id="imageUrl" type="url">
+    </label>
+
+    <label>Rating: <span id="ratingValue">5</span>/10
+      <input id="rating" type="range" min="0" max="10" value="5">
+    </label>
+
+    <footer class="actions">
+      <button class="primary">Guardar</button>
+      <a href="index.html" class="secondary link-button">Cancelar</a>
+    </footer>
+
+    <p id="formMessage" class="message"></p>
+  </form>
+
+</main>
+
+<script src="app.js"></script>
+<script src="form.js"></script>
+</body>
+</html>
