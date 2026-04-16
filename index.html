@@ -14,42 +14,30 @@
       <p class="eyebrow">Series Tracker</p>
       <h1>Mis series</h1>
     </section>
-    <span id="apiStatus" class="status">Conectando API...</span>
+    <nav class="actions">
+      <span id="apiStatus" class="status">Conectando API...</span>
+      <button id="refreshButton" class="icon-button" type="button">↻</button>
+      <a href="form.html" class="primary link-button">Agregar</a>
+    </nav>
   </header>
 
-  <section>
-    <header class="toolbar">
-      <h2>Listado</h2>
-      <nav class="actions">
-        <button id="refreshButton" class="icon-button">↻</button>
-        <a href="form.html" class="primary link-button">Agregar</a>
-      </nav>
-    </header>
-
-    <section id="seriesList" class="series-list"></section>
-  </section>
+  <section id="seriesList" class="imdb-grid"></section>
 
 </main>
 
 <template id="seriesTemplate">
-  <article class="card">
+  <article class="imdb-card">
     <img class="cover" alt="">
-    <section class="card-body">
-
-      <header class="card-header">
-        <h3></h3>
-        <span class="rating"></span>
-      </header>
-
+    <section class="imdb-body">
+      <p class="imdb-rating"></p>
+      <h3 class="imdb-title"></h3>
       <p class="episodes"></p>
       <progress class="progress-bar" value="0" max="100"></progress>
-
       <footer class="card-actions">
-        <button class="view">Ver</button>
-        <button class="edit">Editar</button>
-        <button class="delete">Eliminar</button>
+        <button type="button" class="view">Ver</button>
+        <button type="button" class="edit">Editar</button>
+        <button type="button" class="delete">Eliminar</button>
       </footer>
-
     </section>
   </article>
 </template>

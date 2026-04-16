@@ -40,8 +40,8 @@ function renderSeries() {
   state.series.forEach((serie) => {
     const node = template.content.cloneNode(true);
     const cover = node.querySelector(".cover");
-    const title = node.querySelector("h3");
-    const rating = node.querySelector(".rating");
+    const title = node.querySelector(".imdb-title");
+    const rating = node.querySelector(".imdb-rating");
     const episodes = node.querySelector(".episodes");
     const progressBar = node.querySelector(".progress-bar");
     const viewButton = node.querySelector(".view");
@@ -55,7 +55,7 @@ function renderSeries() {
     cover.src = serie.image_url || getPlaceholderImage();
     cover.alt = `Portada de ${serie.name}`;
     title.textContent = serie.name;
-    rating.textContent = `${serie.rating}/10`;
+    rating.textContent = `⭐ ${serie.rating}/10`;
     episodes.textContent = `${serie.current_episode} de ${serie.total_episodes} episodios`;
     progressBar.value = progress;
     progressBar.max = 100;
