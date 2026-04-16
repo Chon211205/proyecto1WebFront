@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Series Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app">
+
+      <header class="hero">
+        <p class="eyebrow">Series Tracker</p>
+        <h1>Mis series</h1>
+        <span id="apiStatus" class="status">Conectando API...</span>
+      </header>
+
+      <section class="layout">
+
+        <form id="seriesForm" class="form">
+          <input type="hidden" id="seriesId">
+          <h2 id="formTitle">Agregar serie</h2>
+
+          <label for="name">Nombre</label>
+          <input id="name" name="name" type="text" required maxlength="120">
+
+          <label>
+            Episodio actual
+            <input id="currentEpisode" name="currentEpisode" type="number" min="0" value="0" required>
+          </label>
+
+          <label>
+            Total episodios
+            <input id="totalEpisodes" name="totalEpisodes" type="number" min="0" value="0" required>
+          </label>
+
+          <label for="imageUrl">Imagen</label>
+          <input id="imageUrl" name="imageUrl" type="url" placeholder="https://...">
+
+          <label for="rating">Rating: <span id="ratingValue">5</span>/10</label>
+          <input id="rating" name="rating" type="range" min="0" max="10" value="5">
+
+          <footer class="actions">
+            <button type="submit" class="primary">Guardar</button>
+            <button type="button" id="cancelEdit" class="secondary" hidden>Cancelar</button>
+          </footer>
+
+          <p id="formMessage" class="message"></p>
+        </form>
+
+        <section>
+          <header class="toolbar">
+            <h2>Listado</h2>
+            <button id="refreshButton" class="icon-button" type="button" title="Actualizar">↻</button>
+          </header>
+
+          <section id="seriesList" class="series-list"></section>
+        </section>
+
+      </section>
+    </main>
+
+    <template id="seriesTemplate">
+      <article class="card">
+        <img class="cover" alt="">
+
+        <section class="card-body">
+          <header class="card-header">
+            <h3></h3>
+            <span class="rating"></span>
+          </header>
+
+          <p class="episodes"></p>
+
+          <progress class="progress-bar" value="0" max="100"></progress>
+
+          <footer class="card-actions">
+            <button type="button" class="edit">Editar</button>
+            <button type="button" class="delete">Eliminar</button>
+          </footer>
+        </section>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
