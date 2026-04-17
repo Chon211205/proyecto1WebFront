@@ -12,11 +12,14 @@ refreshButton.addEventListener("click", loadSeries);
 async function loadSeries() {
   setStatus(apiStatus, "Conectando API...");
 
+  //Recibe los datos desde el back (adaptado con paginacion)
   try {
-    const response = await fetch(`${API_URL}/series`);
+    const response = await fetch(`${API_URL}/series?page=1&limit=20`);
     if (!response.ok) throw new Error();
 
-    state.series = await response.json();
+    const result = await response.json();
+    state.series = result.data; 
+
     renderSeries();
     setStatus(apiStatus, "API conectada", "ok");
   } catch {
