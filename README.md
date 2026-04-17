@@ -1,9 +1,9 @@
-### Proyecto 1 Web
+# Proyecto 1 Web
 
-# Instrucciones para correrlo localmente
+### Instrucciones para correrlo localmente
 
-# Screen Shoot de la app funcionando
+### Screen Shoot de la app funcionando
 
-# Challenges implementados
+### Challenges implementados
 
-# Reflexion
+### Reflexion
