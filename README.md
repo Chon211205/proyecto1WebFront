@@ -10,5 +10,6 @@
 - [Subjetivo] Calidad del historial de Git — commits descriptivos, progresión lógica, no un solo commit con todo	0 – 20
 - [Subjetivo] Organización del código — archivos separados con responsabilidades claras, en ambos repositorios	0 – 20
 - pec de OpenAPI/Swagger escrita y precisa (el contrato de la API en YAML o JSON)	20
+- Swagger UI corriendo y siendo servido desde el backend (no solo el archivo)	20
 
 ### Reflexion
