@@ -11,6 +11,7 @@ const formMessage = document.querySelector("#formMessage");
 
 ratingInput.addEventListener("input", () => {
   ratingValue.textContent = ratingInput.value;
+  updateRatingStyle(ratingInput);
 });
 
 form.addEventListener("submit", async (event) => {
@@ -65,6 +66,13 @@ async function loadSeriesForEdit() {
   imageUrlInput.value = serie.image_url;
   ratingInput.value = serie.rating;
   ratingValue.textContent = serie.rating;
+}
+
+function updateRatingStyle(input) {
+  const value = input.value;
+  const percent = (value / 10) * 100;
+
+  input.style.background = `linear-gradient(to right, #f5c518 ${percent}%, #e5e7eb ${percent}%)`;
 }
 
 loadSeriesForEdit();

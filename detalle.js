@@ -92,6 +92,13 @@ function updateProgressPreview(currentInput, totalInput, progressBar) {
   progressBar.value = progress;
 }
 
+function updateRatingStyle(input) {
+  const value = input.value;
+  const percent = (value / 10) * 100;
+
+  input.style.background = `linear-gradient(to right, #f5c518 ${percent}%, #e5e7eb ${percent}%)`;
+}
+
 async function saveDetailChanges(serie) {
   const currentEpisodeInput = document.querySelector("#detailCurrentEpisode");
   const totalEpisodesInput = document.querySelector("#detailTotalEpisodes");
