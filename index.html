@@ -14,12 +14,24 @@
       <p class="eyebrow">IMDB</p>
       <h1>Mis series</h1>
     </section>
+
     <nav class="actions">
       <button id="themeToggle" class="icon-button">🌙</button>
       <span id="apiStatus" class="status">Conectando API...</span>
       <button id="refreshButton" class="icon-button" type="button">↻</button>
       <a href="form.html" class="primary link-button">Agregar</a>
     </nav>
+    
+    <section class="searchbar">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Buscar serie por nombre..."
+        autocomplete="off"
+      >
+      <button id="searchButton" class="primary" type="button">Buscar</button>
+      <button id="clearSearch" class="secondary" type="button">Limpiar</button>
+    </section>
   </header>
 
   <section id="seriesList" class="imdb-grid"></section>

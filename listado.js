@@ -1,11 +1,15 @@
 const state = {
   series: [],
+  q: ""
 };
 
 const apiStatus = document.querySelector("#apiStatus");
 const refreshButton = document.querySelector("#refreshButton");
 const seriesList = document.querySelector("#seriesList");
 const template = document.querySelector("#seriesTemplate");
+const searchInput = document.querySelector("#searchInput");
+const searchButton = document.querySelector("#searchButton");
+const clearSearch = document.querySelector("#clearSearch");
 
 refreshButton.addEventListener("click", loadSeries);
 
@@ -71,6 +75,24 @@ function renderSeries() {
       window.location.href = `form.html?id=${serie.id}`;
     });
 
+    searchButton.addEventListener("click", () => {
+      state.q = searchInput.value.trim();
+      loadSeries();
+    });
+
+    clearSearch.addEventListener("click", () => {
+      searchInput.value = "";
+      state.q = "";
+      loadSeries();
+    });
+
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        state.q = searchInput.value.trim();
+        loadSeries();
+      }
+    });
+
     deleteButton.addEventListener("click", () => deleteSeries(serie.id));
 
     seriesList.append(node);
@@ -87,4 +109,30 @@ async function deleteSeries(id) {
   }
 }
 
-loadSeries();
+async function loadSeries() {
+  setStatus(apiStatus, "Conectando API...");
+
+  try {
+    const params = new URLSearchParams({
+      page: "1",
+      limit: "20"
+    });
+
+    if (state.q) {
+      params.set("q", state.q);
+    }
+
+    const response = await fetch(`${API_URL}/series?${params.toString()}`);
+    if (!response.ok) throw new Error("La API no respondio correctamente");
+
+    const result = await response.json();
+    state.series = result.data;
+
+    renderSeries();
+    setStatus(apiStatus, "API conectada", "ok");
+  } catch (error) {
+    state.series = [];
+    renderSeries();
+    setStatus(apiStatus, "API no disponible", "error");
+  }
+}

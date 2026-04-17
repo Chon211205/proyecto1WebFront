@@ -323,7 +323,6 @@ input[type="range"]::-moz-range-thumb {
   overflow: hidden;
 }
 
-/* DETALLE MEJORADO */
 #detailCard {
   width: min(760px, 100%);
   margin: 8px auto 0;
@@ -366,11 +365,27 @@ input[type="range"]::-moz-range-thumb {
   text-align: center;
 }
 
-/* OPCIONAL: tarjeta más cómoda en detalle */
 .detail-field input[type="number"],
 .detail-field input[type="url"],
 .detail-field input[type="text"] {
   min-height: 46px;
+}
+
+.searchbar {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.searchbar input {
+  min-height: 44px;
+}
+
+@media (max-width: 640px) {
+  .searchbar {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 820px) {
