@@ -2,4 +2,8 @@
 
 # Instrucciones para correrlo localmente
 
+# Screen Shoot de la app funcionando
+
 # Challenges implementados
+
+# Reflexion
