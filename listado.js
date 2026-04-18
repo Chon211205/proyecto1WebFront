@@ -19,6 +19,8 @@ const clearSearch = document.querySelector("#clearSearch");
 const sortSelect = document.querySelector("#sortSelect");
 const orderSelect = document.querySelector("#orderSelect");
 
+const exportCsvButton = document.querySelector("#exportCsvButton");
+
 refreshButton.addEventListener("click", loadSeries);
 
 searchButton.addEventListener("click", () => {
@@ -91,6 +93,65 @@ async function loadSeries() {
   }
 }
 
+function exportSeriesToCsv() {
+  if (!state.series || state.series.length === 0) {
+    alert("No hay series para exportar.");
+    return;
+  }
+
+  const headers = [
+    "id",
+    "name",
+    "current_episode",
+    "total_episodes",
+    "image_url",
+    "rating"
+  ];
+
+  const escapeCsvValue = (value) => {
+    if (value === null || value === undefined) {
+      return "";
+    }
+
+    const text = String(value);
+    const escaped = text.replace(/"/g, '""');
+
+    if (/[",\n]/.test(escaped)) {
+      return `"${escaped}"`;
+    }
+
+    return escaped;
+  };
+
+  const rows = state.series.map((serie) => [
+    escapeCsvValue(serie.id),
+    escapeCsvValue(serie.name),
+    escapeCsvValue(serie.current_episode),
+    escapeCsvValue(serie.total_episodes),
+    escapeCsvValue(serie.image_url),
+    escapeCsvValue(serie.rating)
+  ]);
+
+  const csvContent = [
+    headers.join(","),
+    ...rows.map((row) => row.join(","))
+  ].join("\n");
+
+  const csvWithBom = "\uFEFF" + csvContent;
+
+  const blob = new Blob([csvWithBom], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "series.csv";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
+}
+
 function renderSeries() {
   seriesList.replaceChildren();
 
@@ -137,6 +198,8 @@ function renderSeries() {
     editButton.addEventListener("click", () => {
       window.location.href = `form.html?id=${serie.id}`;
     });
+
+    exportCsvButton.addEventListener("click", exportSeriesToCsv);
 
     deleteButton.addEventListener("click", () => {
       deleteSeries(serie.id);
