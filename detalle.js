@@ -10,22 +10,40 @@ async function loadDetail() {
 
   try {
     const response = await fetch(`${API_URL}/series/${id}`);
-    if (!response.ok) throw new Error();
+    if (!response.ok) throw new Error("No se pudo cargar la serie");
 
     const serie = await response.json();
+
+    let rating = 0;
+    try {
+      const ratingResponse = await fetch(`${API_URL}/series/${id}/rating`);
+      if (ratingResponse.ok) {
+        const ratingData = await ratingResponse.json();
+        rating = ratingData.rating;
+      }
+    } catch {
+      rating = 0;
+    }
+
+    serie.rating = rating;
     renderDetail(serie);
-  } catch {
-    detailCard.innerHTML = `<p class="empty">No se pudo cargar la serie.</p>`;
+  } catch (error) {
+    detailCard.innerHTML = `<p class="empty">${error.message}</p>`;
   }
 }
 
 function renderDetail(serie) {
-  const progress = serie.total_episodes === 0
-    ? 0
-    : Math.min(100, Math.round((serie.current_episode / serie.total_episodes) * 100));
+  const progress =
+    serie.total_episodes === 0
+      ? 0
+      : Math.min(
+          100,
+          Math.round((serie.current_episode / serie.total_episodes) * 100)
+        );
 
   detailCard.innerHTML = `
     <img class="cover detail-cover" src="${serie.image_url || getPlaceholderImage()}" alt="Portada de ${serie.name}">
+
     <section class="card-body detail-body">
       <header class="card-header">
         <h2>${serie.name}</h2>
@@ -64,8 +82,11 @@ function renderDetail(serie) {
   const progressBar = document.querySelector("#detailProgress");
   const saveButton = document.querySelector("#saveDetail");
 
+  updateRatingStyle(ratingInput);
+
   ratingInput.addEventListener("input", () => {
     ratingValue.textContent = ratingInput.value;
+    updateRatingStyle(ratingInput);
   });
 
   currentEpisodeInput.addEventListener("input", () => {
@@ -77,7 +98,7 @@ function renderDetail(serie) {
   });
 
   saveButton.addEventListener("click", () => {
-    saveDetailChanges(serie);
+    saveDetailChanges(serie.id);
   });
 }
 
@@ -85,21 +106,71 @@ function updateProgressPreview(currentInput, totalInput, progressBar) {
   const current = Number(currentInput.value);
   const total = Number(totalInput.value);
 
-  const progress = total === 0
-    ? 0
-    : Math.min(100, Math.round((current / total) * 100));
+  const progress =
+    total === 0
+      ? 0
+      : Math.min(100, Math.round((current / total) * 100));
 
   progressBar.value = progress;
 }
 
 function updateRatingStyle(input) {
-  const value = input.value;
+  const value = Number(input.value);
   const percent = (value / 10) * 100;
+  const styles = getComputedStyle(document.body);
+  const accent = styles.getPropertyValue("--accent").trim();
+  const soft = styles.getPropertyValue("--soft").trim();
 
-  input.style.background = `linear-gradient(to right, #f5c518 ${percent}%, #e5e7eb ${percent}%)`;
+  input.style.background = `linear-gradient(to right, ${accent} ${percent}%, ${soft} ${percent}%)`;
 }
 
-async function saveDetailChanges(serie) {
+async function saveSeriesChanges(id, payload) {
+  const response = await fetch(`${API_URL}/series/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(data?.error || "No se pudo guardar la serie");
+  }
+
+  return data;
+}
+
+async function saveRatingChanges(id, rating) {
+  let response = await fetch(`${API_URL}/series/${id}/rating`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ rating })
+  });
+
+  if (response.status === 404) {
+    response = await fetch(`${API_URL}/series/${id}/rating`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ rating })
+    });
+  }
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok && response.status !== 201) {
+    throw new Error(data?.error || "No se pudo guardar el rating");
+  }
+
+  return data;
+}
+
+async function saveDetailChanges(id) {
   const currentEpisodeInput = document.querySelector("#detailCurrentEpisode");
   const totalEpisodesInput = document.querySelector("#detailTotalEpisodes");
   const ratingInput = document.querySelector("#detailRating");
@@ -107,27 +178,24 @@ async function saveDetailChanges(serie) {
 
   message.textContent = "";
 
-  const payload = {
-    name: serie.name,
-    current_episode: Number(currentEpisodeInput.value),
-    total_episodes: Number(totalEpisodesInput.value),
-    image_url: serie.image_url,
-    rating: Number(ratingInput.value),
-  };
-
   try {
-    const response = await fetch(`${API_URL}/series/${serie.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "No se pudo guardar");
+    const currentSeriesResponse = await fetch(`${API_URL}/series/${id}`);
+    if (!currentSeriesResponse.ok) {
+      throw new Error("No se pudo obtener la serie actual");
     }
 
-    const updatedSerie = await response.json();
+    const currentSerie = await currentSeriesResponse.json();
+
+    const updatedSerie = await saveSeriesChanges(id, {
+      name: currentSerie.name,
+      current_episode: Number(currentEpisodeInput.value),
+      total_episodes: Number(totalEpisodesInput.value),
+      image_url: currentSerie.image_url
+    });
+
+    const updatedRating = await saveRatingChanges(id, Number(ratingInput.value));
+
+    updatedSerie.rating = updatedRating.rating;
     renderDetail(updatedSerie);
 
     const updatedMessage = document.querySelector("#detailMessage");
@@ -137,4 +205,6 @@ async function saveDetailChanges(serie) {
   }
 }
 
-loadDetail();
+if (detailCard) {
+  loadDetail();
+}
