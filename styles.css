@@ -307,7 +307,7 @@ input[type="range"]::-moz-range-thumb {
 
 .message {
   min-height: 20px;
-  color: #b91c1c;
+  color: #ffcc00;
   font-size: 0.9rem;
 }
 
