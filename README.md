@@ -1,10 +1,17 @@
 # Proyecto 1 Web
 
-### Instrucciones para correrlo localmente
+## Instrucciones para correrlo localmente
 
-### Screen Shoot de la app funcionando
+## Screen Shoot de la app funcionando
+### Aplicacion:
+<img width="3727" height="1914" alt="image" src="https://github.com/user-attachments/assets/25e6212e-4393-42f0-88b4-d2d84268f220" />
 
-### Challenges implementados
+### Swapper UI:
+<img width="3732" height="1910" alt="image" src="https://github.com/user-attachments/assets/c401c888-7d2a-4a5f-99b8-808f50c36ed7" />
+
+
+
+## Challenges implementados
 
 - [Subjetivo] Calidad visual del cliente — ¿Se ve como una app real o como una tarea?	0 – 30
 - [Subjetivo] Calidad del historial de Git — commits descriptivos, progresión lógica, no un solo commit con todo	0 – 20
@@ -21,4 +28,4 @@
 - Sistema de rating — tabla propia en la base de datos, endpoints REST propios (POST /series/:id/rating, GET /series/:id/rating, etc.), y visible en el cliente.	30
 - Permite subir imágenes. (pongan un tome de como 1 mega a la imagen)	30
 
-### Reflexion
+## Reflexion
