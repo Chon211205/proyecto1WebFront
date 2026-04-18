@@ -29,3 +29,5 @@
 - Permite subir imágenes. (pongan un tome de como 1 mega a la imagen)	30
 
 ## Reflexion
+
+Este proyecto para mi fue interesante debido a que puse mas en practica todo lo aprendido en los laboratorios y ejercicios anteriores en este proyecto como Go, JavaScript, HTML, CSS. Tambien fue divertido como funcionan otras tecnologias relacionadas a los lenguajes anteriores mencionados como por ejemplo el openapi.json y el swagger, es interesante como uno puede comprobar que el backend responde de manera correcta antes de plasmarlo en un frontend. Utilizaria de nuevo estas herramientas ya que agarre mayor practica y confianza.  Por otra parte, al tener repositorios separados me permitio tener mayor orden al momento de trabajar, se me hizo mas comodo al momento de modificar o implementar algo conforme hacia los puntos challenges.
