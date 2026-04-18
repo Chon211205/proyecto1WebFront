@@ -17,5 +17,6 @@
 - Búsqueda por nombre con ?q=	15
 - Ordenamiento con ?sort= y ?order=asc|desc	15
 - Exportar la lista de series a CSV — generado manualmente desde JavaScript, sin librerías. El archivo debe descargarse desde el navegador.	20
+- Exportar la lista de series a Excel (.xlsx) — generado manualmente desde JavaScript, sin librerías de ningún tipo. El archivo debe ser un .xlsx real que abra correctamente en Excel o LibreOffice. Tip: investiguen el formato SpreadsheetML.	30
 
 ### Reflexion
