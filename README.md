@@ -15,5 +15,6 @@
 - Validación server-side con respuestas de error en JSON descriptivas	20
 - Paginación en GET /series con parámetros ?page= y ?limit=	30
 - Búsqueda por nombre con ?q=	15
+- Ordenamiento con ?sort= y ?order=asc|desc	15
 
 ### Reflexion
