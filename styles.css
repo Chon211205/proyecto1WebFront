@@ -382,6 +382,30 @@ input[type="range"]::-moz-range-thumb {
   min-height: 44px;
 }
 
+.controls {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 180px 160px auto auto;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controls input,
+.controls select {
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--card);
+  color: var(--text);
+}
+
+@media (max-width: 820px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .searchbar {
     grid-template-columns: 1fr;

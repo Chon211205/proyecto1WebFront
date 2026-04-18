@@ -16,23 +16,37 @@
     </section>
 
     <nav class="actions">
-      <button id="themeToggle" class="icon-button">🌙</button>
+      <button id="themeToggle" class="icon-button" type="button">🌙</button>
       <span id="apiStatus" class="status">Conectando API...</span>
       <button id="refreshButton" class="icon-button" type="button">↻</button>
       <a href="form.html" class="primary link-button">Agregar</a>
     </nav>
-    
-    <section class="searchbar">
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="Buscar serie por nombre..."
-        autocomplete="off"
-      >
-      <button id="searchButton" class="primary" type="button">Buscar</button>
-      <button id="clearSearch" class="secondary" type="button">Limpiar</button>
-    </section>
   </header>
+
+  <section class="controls">
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Buscar serie por nombre..."
+      autocomplete="off"
+    >
+
+    <select id="sortSelect">
+      <option value="">Ordenar por</option>
+      <option value="name">Nombre</option>
+      <option value="rating">Rating</option>
+      <option value="current_episode">Episodio actual</option>
+      <option value="total_episodes">Total episodios</option>
+    </select>
+
+    <select id="orderSelect">
+      <option value="desc">Descendente</option>
+      <option value="asc">Ascendente</option>
+    </select>
+
+    <button id="searchButton" class="primary" type="button">Aplicar</button>
+    <button id="clearSearch" class="secondary" type="button">Limpiar</button>
+  </section>
 
   <section id="seriesList" class="imdb-grid"></section>
 
