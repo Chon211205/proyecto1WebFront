@@ -19,5 +19,6 @@
 - Exportar la lista de series a CSV — generado manualmente desde JavaScript, sin librerías. El archivo debe descargarse desde el navegador.	20
 - Exportar la lista de series a Excel (.xlsx) — generado manualmente desde JavaScript, sin librerías de ningún tipo. El archivo debe ser un .xlsx real que abra correctamente en Excel o LibreOffice. Tip: investiguen el formato SpreadsheetML.	30
 - Sistema de rating — tabla propia en la base de datos, endpoints REST propios (POST /series/:id/rating, GET /series/:id/rating, etc.), y visible en el cliente.	30
+- Permite subir imágenes. (pongan un tome de como 1 mega a la imagen)	30
 
 ### Reflexion
