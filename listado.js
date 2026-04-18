@@ -21,6 +21,8 @@ const orderSelect = document.querySelector("#orderSelect");
 
 const exportCsvButton = document.querySelector("#exportCsvButton");
 
+const exportExcelButton = document.querySelector("#exportExcelButton");
+
 refreshButton.addEventListener("click", loadSeries);
 
 searchButton.addEventListener("click", () => {
@@ -152,6 +154,117 @@ function exportSeriesToCsv() {
   URL.revokeObjectURL(url);
 }
 
+function exportSeriesToSpreadsheetML() {
+  if (!state.series || state.series.length === 0) {
+    alert("No hay series para exportar.");
+    return;
+  }
+
+  const escapeXml = (value) => {
+    if (value === null || value === undefined) {
+      return "";
+    }
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  };
+
+  const headers = [
+    "ID",
+    "Nombre",
+    "Episodio actual",
+    "Total episodios",
+    "Imagen",
+    "Rating"
+  ];
+
+  const headerCells = headers.map((header) => `
+      <Cell ss:StyleID="Header">
+        <Data ss:Type="String">${escapeXml(header)}</Data>
+      </Cell>
+    `).join("");
+
+  const dataRows = state.series.map((serie) => `
+    <Row>
+      <Cell><Data ss:Type="Number">${serie.id ?? 0}</Data></Cell>
+      <Cell><Data ss:Type="String">${escapeXml(serie.name)}</Data></Cell>
+      <Cell><Data ss:Type="Number">${serie.current_episode ?? 0}</Data></Cell>
+      <Cell><Data ss:Type="Number">${serie.total_episodes ?? 0}</Data></Cell>
+      <Cell><Data ss:Type="String">${escapeXml(serie.image_url ?? "")}</Data></Cell>
+      <Cell><Data ss:Type="Number">${serie.rating ?? 0}</Data></Cell>
+    </Row>
+  `).join("");
+
+  const xml = `<?xml version="1.0"?>
+    <?mso-application progid="Excel.Sheet"?>
+    <Workbook
+      xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+      xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+      xmlns:html="http://www.w3.org/TR/REC-html40">
+      <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+        <Author>Series Tracker</Author>
+        <Created>${new Date().toISOString()}</Created>
+      </DocumentProperties>
+      <Styles>
+        <Style ss:ID="Default" ss:Name="Normal">
+          <Alignment ss:Vertical="Bottom"/>
+          <Borders/>
+          <Font ss:FontName="Calibri" ss:Size="11"/>
+          <Interior/>
+          <NumberFormat/>
+          <Protection/>
+        </Style>
+
+        <Style ss:ID="Header">
+          <Font ss:Bold="1" ss:Color="#000000"/>
+          <Interior ss:Color="#F5C518" ss:Pattern="Solid"/>
+          <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+        </Style>
+      </Styles>
+
+      <Worksheet ss:Name="Series">
+        <Table>
+          <Column ss:Width="50"/>
+          <Column ss:Width="180"/>
+          <Column ss:Width="110"/>
+          <Column ss:Width="110"/>
+          <Column ss:Width="260"/>
+          <Column ss:Width="60"/>
+
+          <Row>
+            ${headerCells}
+          </Row>
+
+          ${dataRows}
+        </Table>
+
+        <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+          <ProtectObjects>False</ProtectObjects>
+          <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+      </Worksheet>
+    </Workbook>`;
+
+  const blob = new Blob([xml], {
+    type: "application/vnd.ms-excel;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "series.xls";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 function renderSeries() {
   seriesList.replaceChildren();
 
@@ -200,6 +313,8 @@ function renderSeries() {
     });
 
     exportCsvButton.addEventListener("click", exportSeriesToCsv);
+
+    exportExcelButton.addEventListener("click", exportSeriesToSpreadsheetML);
 
     deleteButton.addEventListener("click", () => {
       deleteSeries(serie.id);
